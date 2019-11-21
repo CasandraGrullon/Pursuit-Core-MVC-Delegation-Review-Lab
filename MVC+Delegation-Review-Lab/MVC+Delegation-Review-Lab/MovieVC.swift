@@ -13,6 +13,11 @@ class MovieVC: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     var movies = [Movie]()
+    var currentFont : CGFloat = 17 {
+        didSet {
+            tableView.reloadData()
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,6 +29,7 @@ class MovieVC: UIViewController {
         guard let newTextFont = segue.source as? TypeSettingsVC else {
             fatalError("segue didn't work")
         }
+        currentFont = newTextFont.updatedFont ?? 17
     }
     
 
@@ -40,6 +46,9 @@ extension MovieVC: UITableViewDataSource{
         
         cell.textLabel?.text = movie.name
         cell.detailTextLabel?.text = movie.year.description
+        
+        cell.textLabel?.font =  UIFont.systemFont(ofSize: currentFont)
+        cell.detailTextLabel?.font =  UIFont.systemFont(ofSize: currentFont)
         
         return cell
     }

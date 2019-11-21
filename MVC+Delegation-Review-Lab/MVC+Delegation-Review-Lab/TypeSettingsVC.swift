@@ -14,10 +14,14 @@ class TypeSettingsVC: UIViewController {
     @IBOutlet weak var fontSizeLabel: UILabel!
     @IBOutlet weak var stepper: UIStepper!
     
+    var movie: Movie?
+    
+    var updatedFont: CGFloat!
     
     var stepperFont: Double = 17.0 {
         didSet{
             let value = String(format: "%0.f", stepper.value)
+            updatedFont = CGFloat(stepper.value)
             fontSizeLabel.text = "Preview Font Size: \(value)"
         }
     }
@@ -25,6 +29,7 @@ class TypeSettingsVC: UIViewController {
     var sliderFont: Float = 17.0 {
         didSet {
             let value = String(format: "%0.f", slider.value)
+            updatedFont = CGFloat(slider.value)
             fontSizeLabel.text = "Preview Font Size: \(value)"
         }
     }
@@ -53,13 +58,14 @@ class TypeSettingsVC: UIViewController {
     @IBAction func sliderAction(_ sender: UISlider) {
         sliderFont = sender.value
         stepper.value = Double(sender.value)
-        
+        updatedFont = CGFloat(sender.value)
     }
     
     
     @IBAction func stepperAction(_ sender: UIStepper) {
         stepperFont = sender.value
         slider.value = Float(sender.value)
+        updatedFont = CGFloat(sender.value)
     }
     
     
