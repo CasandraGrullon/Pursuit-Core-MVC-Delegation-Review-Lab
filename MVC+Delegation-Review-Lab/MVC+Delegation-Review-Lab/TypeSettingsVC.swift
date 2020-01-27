@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol TextSizeDelegate: AnyObject {
+    func didChangeText(size: CGFloat)
+}
+
 class TypeSettingsVC: UIViewController {
 
     @IBOutlet weak var slider: UISlider!
@@ -16,7 +20,13 @@ class TypeSettingsVC: UIViewController {
     
     var movie: Movie?
     
-    var updatedFont: CGFloat!
+    weak var delegate: TextSizeDelegate?
+    
+    var updatedFont: CGFloat! {
+        didSet {
+            delegate?.didChangeText(size: updatedFont)
+        }
+    }
     
     var stepperFont: Double = 17.0 {
         didSet{
@@ -40,7 +50,6 @@ class TypeSettingsVC: UIViewController {
         configureStepper()
     }
 
-
     func configureSlider() {
         slider.minimumValue = 8.0
         slider.maximumValue = 40.0
@@ -54,13 +63,11 @@ class TypeSettingsVC: UIViewController {
         stepper.stepValue = 1.0
     }
     
-    
     @IBAction func sliderAction(_ sender: UISlider) {
         sliderFont = sender.value
         stepper.value = Double(sender.value)
         updatedFont = CGFloat(sender.value)
     }
-    
     
     @IBAction func stepperAction(_ sender: UIStepper) {
         stepperFont = sender.value

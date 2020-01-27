@@ -25,12 +25,21 @@ class MovieVC: UIViewController {
         movies = Movie.allMovies
     }
     
-    @IBAction func unwind(segue: UIStoryboardSegue) {
-        guard let newTextFont = segue.source as? TypeSettingsVC else {
-            fatalError("segue didn't work")
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let settingsVC = segue.destination as? TypeSettingsVC else {
+            fatalError("could not downcast")
         }
-        currentFont = newTextFont.updatedFont ?? 17
+        currentFont = settingsVC.updatedFont ?? 17
+        settingsVC.delegate = self
     }
+    
+//    @IBAction func unwind(segue: UIStoryboardSegue) {
+//        guard let newTextFont = segue.source as? TypeSettingsVC else {
+//            fatalError("segue didn't work")
+//        }
+//        currentFont = newTextFont.updatedFont ?? 17
+//        newTextFont.delegate = self
+//    }
     
 
 }
@@ -52,5 +61,12 @@ extension MovieVC: UITableViewDataSource{
         
         return cell
     }
+    
+}
+extension MovieVC: TextSizeDelegate {
+    func didChangeText(size: CGFloat) {
+        currentFont = size
+    }
+    
     
 }
